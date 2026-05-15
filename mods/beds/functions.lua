@@ -367,6 +367,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	end
 
 	if fields.force then
+		local in_bed = beds.player
 		local ges = #minetest.get_connected_players()
 		if afk_check and afk_check.players then
 			for name, data in pairs(afk_check.players) do
