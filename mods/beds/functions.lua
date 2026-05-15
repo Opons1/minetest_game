@@ -56,8 +56,8 @@ local function check_in_beds(players)
 			return false
 		end
 	end
-
-	return #players > 0
+	--return #players > 0
+	return false
 end
 
 local function set_physics_override(player, put_to_bed)
@@ -196,6 +196,15 @@ end
 
 local function update_formspecs(finished)
 	local ges = #minetest.get_connected_players()
+	local in_bed = beds.player
+	if afk_check and afk_check.players then
+		for name, data in pairs(afk_check.players) do
+			if data and data.is_afk == true and not in_bed[name] then 
+				ges = ges - 1 
+			end
+		end
+	end
+	core.chat_send_all(ges)
 	local player_in_bed = get_player_in_bed_count()
 	local is_majority = (ges / 2) < player_in_bed
 
