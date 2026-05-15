@@ -203,7 +203,6 @@ local function update_formspecs(finished)
 			end
 		end
 	end
-	core.chat_send_all(ges)
 	local player_in_bed = get_player_in_bed_count()
 	local is_majority = (ges / 2) < player_in_bed
 
@@ -368,7 +367,15 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	end
 
 	if fields.force then
-		local is_majority = (#minetest.get_connected_players() / 2) < last_player_in_bed
+		local ges = #minetest.get_connected_players()
+		if afk_check and afk_check.players then
+			for name, data in pairs(afk_check.players) do
+				if data and data.is_afk == true and not in_bed[name] then 
+					ges = ges - 1 
+				end
+			end
+		end
+		local is_majority = (ges / 2) < last_player_in_bed
 		if is_majority and is_night_skip_enabled() then
 			update_formspecs(true)
 			beds.skip_night()
