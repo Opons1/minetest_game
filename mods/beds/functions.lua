@@ -56,8 +56,7 @@ local function check_in_beds(players)
 			return false
 		end
 	end
-	--return #players > 0
-	return false
+	return #players > 0
 end
 
 local function set_physics_override(player, put_to_bed)
